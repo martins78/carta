@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Asistente de Cartas – Secretariado Ejecutivo </title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="style-classic">
+  <div class="app">
+    <aside>
+      <div class="brand"><div class="logo"></div><h1>Asistente de Cartas</h1></div>
+      <div class="search" style="margin:8px 0 4px">
+        <input id="searchTpl" type="text" placeholder="Buscar tipo de carta..." />
+      </div>
+      <div class="menu" id="menu"></div>
+      <small style="margin-top:auto;opacity:.7">v1 </small>
+    </aside>
+
+    <main>
+      <!-- Panel de edición -->
+      <section class="card">
+        <div class="hd">
+          <h2>Editor</h2>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label for="estilo" style="margin-right:6px;color:var(--muted)">Estilo:</label>
+            <select id="estilo">
+              <option value="style-classic">Clásico</option>
+              <option value="style-modern">Moderno</option>
+              <option value="style-institutional">Institucional</option>
+            </select>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="grid-3">
+            <div>
+              <label>Ciudad</label>
+              <input id="ciudad" type="text" placeholder="La Paz" />
+            </div>
+            <div>
+              <label>Fecha</label>
+              <input id="fecha" type="date" />
+            </div>
+            <div>
+              <label>Logo (subir)</label>
+              <input id="logo" type="file" accept="image/*" />
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:8px">
+            <div>
+              <label>Institución / Empresa</label>
+              <input id="organizacion" type="text" placeholder="Nombre de la institución" />
+            </div>
+            <div>
+              <label>Contacto (dirección / teléfono / email)</label>
+              <input id="contacto" type="text" placeholder="Dirección, Tel, Email" />
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:8px">
+            <div>
+              <label>Destinatario</label>
+              <input id="destinatario" type="text" placeholder="Nombre del destinatario" />
+            </div>
+            <div>
+              <label>Cargo del destinatario</label>
+              <input id="cargoDest" type="text" placeholder="Cargo del destinatario" />
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:8px">
+            <div>
+              <label>Remitente</label>
+              <input id="remitente" type="text" placeholder="Nombre del remitente" />
+            </div>
+            <div>
+              <label>Cargo del remitente</label>
+              <input id="cargo" type="text" placeholder="Cargo del remitente" />
+            </div>
+          </div>
+
+          <div style="margin-top:8px">
+            <label>Asunto</label>
+            <input id="asunto" type="text" placeholder="Solicitud / Comunicación / Agradecimiento..." />
+          </div>
+
+          <div style="margin-top:8px">
+            <label>Cuerpo</label>
+            <textarea id="cuerpo" placeholder="Escribe o inserta frases sugeridas..."></textarea>
+          </div>
+
+          <div class="grid-2" style="margin-top:8px">
+            <div>
+              <label>Despedida</label>
+              <input id="despedida" type="text" value="Sin otro particular, saludo a usted atentamente." />
+            </div>
+            <div>
+              <label>Firma</label>
+              <input id="firma" type="text" placeholder="Nombre y apellidos" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="insertarFrase">Frases sugeridas</button>
+            <button class="btn alt" id="imprimir">Imprimir</button>
+            <button class="btn ghost" id="exportPDF">Exportar PDF</button>
+            <button class="btn ghost" id="exportDOCX">Exportar Word (.docx)</button>
+            <button class="btn ghost" id="guardar">Guardar borrador</button>
+            <button class="btn ghost" id="cargar">Cargar borrador</button>
+            <select id="plantillaSelect" title="Cambiar plantilla"></select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Previsualización -->
+      <section class="card preview">
+        <div class="hd"><h2>Previsualización</h2></div>
+        <div class="sheet-wrap">
+          <div class="sheet" id="sheet">
+            <div class="header" id="header">
+              <img id="logoPrev" alt="logo" style="display:none"/>
+              <div>
+                <div class="org" id="orgPrev">—</div>
+                <div class="hdr-meta" id="contactoPrev">—</div>
+                <div class="hdr-meta"><span id="ciudadPrev">—</span>, <span id="fechaPrev">—</span></div>
+              </div>
+            </div>
+
+            <div class="meta">
+              <div id="destPrev" style="font-weight:700">—</div>
+              <div id="cargoDestPrev">—</div>
+            </div>
+
+            <div class="subject">Asunto: <span id="asuntoPrev">—</span></div>
+
+            <div class="body" id="cuerpoPrev">—</div>
+
+            <div class="closing">
+              <div id="despedidaPrev" style="margin-bottom:28px">—</div>
+              <div style="height:48px"></div>
+              <div id="firmaPrev" style="font-weight:700">—</div>
+              <div id="cargoPrev" style="color:#374151">—</div>
+              <div id="remitentePrev" style="display:none"></div>
+            </div>
+
+            <div class="watermark" id="marcaAgua" style="display:none">BORRADOR</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal frases -->
+  <dialog id="dlgFrases" style="border:none;border-radius:16px;padding:0;max-width:720px;width:95%">
+    <div class="card" style="border:none">
+      <div class="hd"><h2>Frases sugeridas (<span id="tipoActual">—</span>)</h2><button class="btn ghost" onclick="dlgFrases.close()">Cerrar</button></div>
+      <div class="bd"><div id="frasesWrap" style="display:flex;flex-wrap:wrap;gap:8px"></div></div>
+    </div>
+  </dialog>
+
+  <!-- Librerías para exportar -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.0-beta.4/docx.umd.js"></script>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
